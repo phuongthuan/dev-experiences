@@ -1,7 +1,7 @@
 
-**Hello**
+### **Hello**
 
-**My name is Nguyen Phuong Thuan**
+### **My name is Nguyen Phuong Thuan**
 
 This repo is my researching experience. It included all of the stuff related to programming that i've collected in my lifetime.
 
