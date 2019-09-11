@@ -1,7 +1,6 @@
-# Một số tip để tối ưu hóa performance khi làm việc với React (P1)
+## Một số tip để tối ưu hóa performance khi làm việc với React (P1)
 
 Chỉ cần những sai lầm ngớ ngẩn rất đơn giản thôi cũng sẽ làm giảm hiệu suất của ứng dụng React. Muốn app chạy nhanh thì trước tiên phải thực hiện tối ưu cho các phần nhỏ.
-
 
 ## 1. Sử dụng Functional / Stateless Component và PureComponent
 
@@ -24,7 +23,7 @@ Không giống như Class Component, PureComponent chỉ render lại khi có pr
 
 Không nên truyền những props quá chung chung, hoặc truyền 1 mớ vào một `Component` như sau:
 
-```
+```js
 const Person = (props) => (
     <div {...props}>
         {props.text}
@@ -34,16 +33,13 @@ const Person = (props) => (
 
 Nên định nghĩa chính xác những property nào mà ta muốn truyền vào, như sau:
 
-```
+```js
 const Person = (props) => (
     <div specificAttribute={props.specificAttribute}>
         {props.text}
     </div>
 )
 ```
-
-
-
 
 ## 3. Dependency optimization
 
@@ -57,24 +53,19 @@ Ví dụ về một thư viện khá phố biến và hầu như ai cũng đã t
 
 Bad
 
-```
+```js
 import _ from 'lodash'
 
 const person = {}
-
 _.isEmpty(person) // true
-
 ```
+
 Good
-
-```
-
-import isEmpty from 'lodash/isEmpty'
+```js
+import _isEmpty from 'lodash/isEmpty'
 
 const person = {}
-
-isEmpty(person) // true
-
+_isEmpty(person) // true
 ```
 
 ## 4. Sử dụng ``React.Fragment`` để tránh wrapper nhiều lớp `div`
@@ -84,9 +75,7 @@ React chỉ cho phép return về 1 nodo. Do đó, chúng ta thường có thói
 => Hãy chuyển sang sử dụng `React.Fragment`
 
 Bad 
-
-```
-
+```js
 const Person = () => (
     <div>
         <p>name</p>
@@ -94,14 +83,11 @@ const Person = () => (
         <p>job</p>
     </div>
 )
-
 ```
 
 
 Good 
-
-```
-
+```js
 const Person = () => (
     <React.Fragment>
         <p>name</p>
@@ -109,14 +95,12 @@ const Person = () => (
         <p>job</p>
     </React.Fragment>
 )
-
 ```
 
 Ở những bản React gần đây thì chúng ta có thể sử dụng cú pháp `<></>` để thay thế cho `<React.Fragment></React.Fragment>`
 
 Extremely Good
-
-```
+```js
 const Person = () => (
     <>
         <p>name</p>
@@ -124,7 +108,6 @@ const Person = () => (
         <p>job</p>
     </>
 )
-
 ```
 
 ## 5. Hạn chế những phép tính toán phức tạp trong hàm render() hoặc JSX
@@ -132,8 +115,7 @@ const Person = () => (
 Nếu như có trên 3 phép tính toán để hiển thị được kết quả cuối cùng thì chúng ta nên tách ra thành một hàm riêng, tính toán sau đó trả về dữ liệu. 
 
 Bad 
-```
-
+```js
 render() {
     const { num1, num2 } = this.props;
     const sum = num1 + num2;
@@ -146,12 +128,10 @@ render() {
         </div>
     )
 }
-
 ```
 
 Good
-```
-
+```js
 getSum = () => {
     const { num1, num2 } = this.props;
     return num1 + num2;
@@ -170,7 +150,6 @@ render() {
         </div>
     )
 }
-
 ```
 
 ## 6. Tránh sử dụng index để làm key trong hàm `map()`
@@ -183,25 +162,19 @@ Key phải là `unique`, do đó nên sử dụng những thuật toán hoặc c
 
 
 Bad
-```
+```js
 persons.map((person, index) => <Person key={index} data={person} />)
-
 ```
 
 Good
-```
-
+```js
 import shortid from 'shortid'
 
 persons.map(person => <Person key={shortid} data={person} />)
-
 ```
 
 Extremly Good
-
-```
-
+```js
 persons.map(person => <Person key={person.id} data={person} />)
-
 ```
 
